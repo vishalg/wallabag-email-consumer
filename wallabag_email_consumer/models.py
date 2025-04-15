@@ -16,10 +16,10 @@ class User(Base):
     token_valid = Column(DateTime)
     last_check = Column(DateTime)
     email = Column(String)
-    kindle_mail = Column(String)
+    send_to_emails = Column(String)
     active = Column(Boolean, default=True)
 
-    jobs = relationship('Job', backref='user')
+    jobs = relationship("Job", backref="user")
 
 
 class Job(Base):
@@ -29,7 +29,7 @@ class Job(Base):
     article = Column(Integer)
     title = Column(String)
     user_name = Column(String, ForeignKey("user.name"))
-    format = Column(Enum('pdf', 'mobi', 'epub', name='format_enum'))
+    format = Column(Enum("pdf", "mobi", "epub", name="format_enum"))
 
 
 class ContextSession:
@@ -49,9 +49,7 @@ def context_session(config):
 
 
 def session_maker(config):
-    Session = sessionmaker(autocommit=False,
-                           autoflush=False,
-                           bind=create_engine(config.db_uri))
+    Session = sessionmaker(autocommit=False, autoflush=False, bind=create_engine(config.db_uri))
     return Session
 
 

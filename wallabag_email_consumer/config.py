@@ -19,7 +19,8 @@ class Config:
     smtp_port: int
     smtp_user: str
     smtp_passwd: str
-    tag: str = "kindle"
+    tag: str = "email"
+    valid_domains: str = "kindle.com, free.kindle.com"
     refresh_grace: int = 120
     consume_interval: int = 30
     interface_host: str = "127.0.0.1"
@@ -36,11 +37,11 @@ class Config:
         parser = configparser.ConfigParser()
         parser.read(filename)
 
-        if 'DEFAULT' not in parser:
-            logger.warn("Config file {filename} does not contain a section DEFAULT", filename=filename)
+        if "wallabag-email" not in parser:
+            logger.warn("Config file {filename} does not contain a section wallabag-email", filename=filename)
             return None
 
-        dflt = parser['DEFAULT']
+        dflt = parser["wallabag-email"]
 
         tmp = {}
         missing = []
@@ -52,8 +53,9 @@ class Config:
                     missing.append(field.name)
 
         if 0 != len(missing):
-            logger.warn("Config file {filename} does not contain configs for: {lst}", filename=filename,
-                        lst=", ".join(missing))
+            logger.warn(
+                "Config file {filename} does not contain configs for: {lst}", filename=filename, lst=", ".join(missing)
+            )
             return None
 
         return Config(**tmp)

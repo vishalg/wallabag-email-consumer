@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% import 'macros.html' as forms %}
+
+{% block body %}
+
+<ul class="nav nav-pills nav-fill mb-3">
+    <li class="nav-item">
+        <a class="nav-link active" href="#">Add User</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/update">Refresh User</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/delete">Delete User</a>
+    </li>
+</ul>
+
+{{ forms.messages(errors=errors, messages=messages) }}
+
+<div class="card">
+    <div class="card-header">Add an account</div>
+    <div class="card-body">
+        <form method="post" action="/">
+            <div class="row">
+                {{ forms.input('username', "Username", description='Your wallabag username at ' + wallabag_host,
+                data=data, errors=errors) }}
+                {{ forms.input('password', "Password", type='password', description='Your wallabag password at ' +
+                wallabag_host + ". The password will not be stored", data=data, errors=errors) }}
+            </div>
+            <div class="row">
+                {{ forms.input('sendToEmails', "Send to Email",
+                pattern='^([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})(\s*,\s*[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})*$',
+                description='Email addresses (separated by a comma) ' + wallabag_host, data=data, errors=errors) }}
+                {{ forms.input('notifyEmail', "Errors Email", type='email', description='An alternative email where we
+                can send any problems. ' + wallabag_host, data=data, errors=errors) }}
+            </div>
+            <div class="row">
+                <div class="col-lg">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

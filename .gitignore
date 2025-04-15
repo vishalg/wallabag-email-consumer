@@ -155,6 +155,9 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+### VSCode settings
+.vscode
+
 ### Vim template
 # Swap
 [._]*.s[a-v][a-z]

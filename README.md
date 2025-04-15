@@ -1,16 +1,17 @@
-# Push tagged wallabag articles to kindle
+# Push tagged wallabag articles to email
 
 
 This is a service that polls a [Wallabag](https://wallabag.org/en)
-instance for articles with a certain tag (`kindle`, `kindle-mobi` or
-`kindle-pdf`). If it finds an article tagged with one of thse tags, it
-exports the article in the requested format and sends it via email to a
-configured kindle adress.
+instance for articles with a specified tag (defaults to `email`) 
+as well as articles with `-pdf` or `-mobi` appended to the configured tag. 
+If it finds an article tagged with one of thse tags, it exports the article 
+in the epub or the requested format and sends it via email to a list of configured email adresses.
+
 
 The software consists of three parts:
 
 * **consumer:** This is the part that consumes the tags from wallabag
-  and pushes them to the kindle addresses.
+  and pushes them to the email addresses.
 * **refresher:** As wallabag gives no permanent api tokens we need to
   refresh them regularly. This part asks for a new token every time the
   old one is due to expire. With this method we don't need to save the
@@ -44,20 +45,20 @@ The following tabe describes all options:
 |`smtp_port`        | `SMTP_PORT`        | required |            | The Port of the SMTP server. |
 |`smtp_user`        | `SMTP_USER`        | required |            | The user for SMTP auth. |
 |`smtp_passwd`      | `SMTP_PASSWD`      | required |            | The password for SMTP auth. |
-|`tag`              | `TAG`              | optional | `kindle`   | The tag to consume. |
+|`tag`              | `TAG`              | optional | `email`   | The tag to consume. |
 |`refresh_grace`    | `REFRESH_GRACE`    | optional | `120`      | The amount of seconds the token is refreshed before expiring. |
 |`consume_interval` | `CONSUME_INTERVAL` | optional | `30`       | The time in seconds between two consume cycles. |
 |`interface_host`   | `INTERFACE_HOST`   | optional | `120.0.0.1`| The IP the user interface should bind to.  |
 |`interface_port`   | `INTERFACE_PORT`   | optional | `8080`     | The port the user interface should bind. |
 
-The config file is read either from the current working dicectory where it
+The config file is read either from the current working directory where it
 would be called `config.ini` or from a path hiven to the commandline option
 `--cfg`. To use configuration via environment use `--env`.
 
 
 ## Running
 
-Every component must be enabled via a commandline switch. To runn all three
+Every component must be enabled via a commandline switch. To run all three
 in one prcess use all three:
 ```
 $ ./service.py --refresher --consumer --interface
@@ -80,7 +81,7 @@ To initialize the database, run the server once with `--create_db`.
 
 The provided dockerfile makes it easy to use the software as a docker
 container. The latest state of the master branch can be found as a 
-[Automated build on the Docker hub](https://hub.docker.com/r/janlo/wallabag-kindle-consumer).
+[Automated build on the Docker hub](https://hub.docker.com/r/vishalg9/wallabag-email-consumer).
 
 You can easily configure the container via the environment variables from
 above. Just make sure, that the database is in a volume if you use sqlite.

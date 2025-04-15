@@ -5,7 +5,7 @@ import datetime
 from logbook import Logger
 from sqlalchemy.orm import joinedload
 
-from wallabag_kindle_consumer.models import User, Job, context_session
+from wallabag_email_consumer.models import User, Job, context_session
 
 logger = Logger(__name__)
 

@@ -1,0 +1,22 @@
+{% macro input(id, label, type='text', pattern='', description='', placeholder='', data={}, errors={}) %}
+<div class="form-group col-lg{% if id in errors %} is-invalid{% endif %}">
+    <label for="{{ id }}">{{ label }}</label>
+    <input name="{{ id }}" type="{{ type }}" {% if pattern !="" %} pattern="{{ pattern }}" {% endif %}
+        class="form-control form-control-sm{% if id in errors %} is-invalid{% endif %}" id="{{ id }}"
+        aria-describedby="{{ id }}Help" placeholder="{{ placeholder }}" value="{{ data[id]|default("") }}">
+    <small id="{{ id }}Help" class="form-text text-muted">{{ description }}</small>
+</div>
+{% endmacro %}
+
+{% macro messages(errors, messages=[]) %}
+{% for msg in errors.values() %}
+<div class="alert alert-danger" role="alert">
+    {{ msg }}
+</div>
+{% endfor %}
+{% for msg in messages %}
+<div class="alert alert-primary" role="alert">
+    {{ msg }}
+</div>
+{% endfor %}
+{% endmacro %}

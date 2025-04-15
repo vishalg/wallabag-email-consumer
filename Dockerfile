@@ -16,4 +16,4 @@ WORKDIR /app
 
 EXPOSE 8080
 
-CMD ./service.py --refresher --consumer --interface --env
+CMD ./service.py --refresher --consumer --interface
