@@ -16,4 +16,4 @@ WORKDIR /app
 
 EXPOSE 8080
 
-CMD ["./service.py", "--refresher", "--consumer", "--interface", "--create_db"]
+CMD ["./service.py", "--refresher", "--consumer", "--interface", "--create_db", "--cfg", "/data/config.ini"]

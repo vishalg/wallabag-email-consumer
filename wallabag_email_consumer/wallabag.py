@@ -100,18 +100,25 @@ class Wallabag:
         async with aiohttp.ClientSession() as session:
             for tag in self.tags:
                 params = self._api_params(user, {"tags": tag.tag})
-                async with session.get(self._url("/api/entries.json"), params=params) as resp:
-                    if resp.status != 200:
-                        logger.warn("Could not get entries of tag {tag} for user {user}", tag=tag.tag, user=user.name)
-                        return
+                try:
+                    async with session.get(self._url("/api/entries.json"), params=params) as resp:
+                        if resp.status != 200:
+                            logger.warn(
+                                "Could not get entries of tag {tag} for user {user}", tag=tag.tag, user=user.name
+                            )
+                            return
 
-                    data = await resp.json()
-                    if data["pages"] == 1:
-                        user.last_check = datetime.utcnow()
+                        data = await resp.json()
+                        if data["pages"] == 1:
+                            user.last_check = datetime.utcnow()
 
-                    articles = data["_embedded"]["items"]
-                    for article in articles:
-                        yield Article(tag=tag, **article)
+                        articles = data["_embedded"]["items"]
+                        for article in articles:
+                            yield Article(tag=tag, **article)
+                except Exception as e:
+                    logger.warn(
+                        "Could not get entries of tag {tag} for user {user}: {e}", tag=tag.tag, user=user.name, e=e
+                    )
 
     async def remove_tag(self, user, article):
         params = self._api_params(user)
